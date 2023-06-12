@@ -1,10 +1,11 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue';
+import NewNoteModal from './components/NewNoteModal.vue';
 </script>
 
 <template>
-  <div></div>
-  <HelloWorld />
+  <div>
+    <NewNoteModal />
+  </div>
 </template>
 
 <style scoped></style>

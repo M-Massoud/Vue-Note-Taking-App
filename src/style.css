@@ -1,12 +1,19 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
+  --darker-black: #1a1a1a;
+  --lighter-black: #242424;
+  --grey-color: rgba(255, 255, 255, 0.87);
+  /* color: rgba(255, 255, 255, 0.87);
+  background-color: #242424; */
+  background-color: var(--lighter-black);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -52,7 +59,10 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  /* background-color: #1a1a1a; */
+  /* color: rgba(255, 255, 255, 0.87); */
+  background-color: var(--darker-black);
+  color: var(--grey-color);
   cursor: pointer;
   transition: border-color 0.25s;
 }
@@ -65,7 +75,8 @@ button:focus-visible {
 }
 
 .card {
-  padding: 2em;
+  padding: 1rem;
+  border-radius: 0.25rem;
 }
 
 #app {
@@ -73,17 +84,4 @@ button:focus-visible {
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
 }
