@@ -1,8 +1,12 @@
 <script setup>
+import ListNotes from './ListNotes.vue';
 import { ref } from 'vue';
 
 const showModal = ref(false);
+const note = ref({ title: '', content: '' });
 const notes = ref([]);
+
+const props = defineProps(['notes']);
 
 function openModal() {
   showModal.value = true;
@@ -11,9 +15,16 @@ function openModal() {
 function closeModal() {
   showModal.value = false;
 }
+
+function confirmNote(event) {
+  event.preventDefault();
+  notes.value.push({ title: note.value.title, content: note.value.content });
+  showModal.value = false;
+}
 </script>
 
 <template>
+  <ListNotes :notes="notes" />
   <button class="modal-open-button" @click="openModal">
     <font-awesome-icon icon="plus" /> Add Note
   </button>
@@ -26,12 +37,20 @@ function closeModal() {
       <p class="modal-form-label">
         <label for="note-title">Note Title</label>
       </p>
-      <input class="modal-form-input" id="note-title" />
+      <input class="modal-form-input" id="note-title" v-model="note.title" />
 
       <p class="modal-form-label">
         <label for="note-content">Note Content</label>
       </p>
-      <textarea class="modal-form-text-area" id="note-content" rows="8" cols="48" />
+      <textarea
+        class="modal-form-text-area"
+        id="note-content"
+        v-model="note.content"
+        rows="8"
+        cols="48"
+      />
+
+      <button class="modal-confirm-button" @click="confirmNote">Confirm</button>
     </form>
   </div>
 </template>
@@ -39,8 +58,18 @@ function closeModal() {
 <style scoped>
 .note-modal {
   background-color: #1a1a1a;
-  position: relative;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
   padding: 24px;
+  width: 480px;
+}
+
+@media screen and (max-width: 992px) {
+  .note-modal {
+    max-width: 85%;
+  }
 }
 
 .modal-open-button {
@@ -53,6 +82,12 @@ function closeModal() {
   position: absolute;
   top: 16px;
   right: 8px;
+}
+
+.modal-confirm-button {
+  margin-top: 16px;
+  border: 1px solid transparent;
+  background-color: var(--lighter-black);
 }
 
 .modal-form-label {
