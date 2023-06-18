@@ -20,6 +20,7 @@ function confirmNote(event) {
   event.preventDefault();
   notes.value.push({ title: note.value.title, content: note.value.content });
   showModal.value = false;
+  note.value = { title: '', content: '' };
 }
 </script>
 
@@ -50,7 +51,13 @@ function confirmNote(event) {
         cols="48"
       />
 
-      <button class="modal-confirm-button" @click="confirmNote">Confirm</button>
+      <button
+        class="modal-confirm-button"
+        @click="confirmNote"
+        :disabled="note.title == '' || note.content == ''"
+      >
+        Confirm
+      </button>
     </form>
   </div>
 </template>
@@ -88,6 +95,12 @@ function confirmNote(event) {
   margin-top: 16px;
   border: 1px solid transparent;
   background-color: var(--lighter-black);
+}
+
+.modal-confirm-button:disabled {
+  background-color: var(--grey-color);
+  color: var(--lighter-black);
+  cursor: not-allowed;
 }
 
 .modal-form-label {

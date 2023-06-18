@@ -13,12 +13,10 @@ defineProps(['notes']);
 
 <style scoped>
 .notes-container {
-  width: 100%;
   display: flex;
   flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: space-around;
-  gap: 1%;
+  justify-content: center;
+  gap: 2%;
 }
 
 .note-card {
@@ -26,6 +24,6 @@ defineProps(['notes']);
   color: var(--grey-color);
   border-radius: 4px;
   padding: 16px;
-  flex-basis: 30%;
+  margin-bottom: 2%;
 }
 </style>
