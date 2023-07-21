@@ -4,6 +4,9 @@ defineProps(['notes']);
 
 <template>
   <div class="notes-container">
+    <div class="first-note-text" v-if="notes.length == 0">
+      You don't have any notes yet!
+    </div>
     <div v-for="note in notes" class="note-card">
       <h2>{{ note.title }}</h2>
       <p>{{ note.content }}</p>
@@ -16,7 +19,10 @@ defineProps(['notes']);
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 2%;
+}
+
+.first-note-text {
+  color: var(--grey-color);
 }
 
 .note-card {
@@ -24,6 +30,6 @@ defineProps(['notes']);
   color: var(--grey-color);
   border-radius: 4px;
   padding: 16px;
-  margin-bottom: 2%;
+  margin: 12px;
 }
 </style>

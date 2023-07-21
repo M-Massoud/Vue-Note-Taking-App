@@ -1,10 +1,12 @@
 <script setup>
+import { ref, watch, onMounted } from 'vue';
 import ListNotes from './ListNotes.vue';
-import { ref } from 'vue';
 
 const showModal = ref(false);
 const note = ref({ title: '', content: '' });
-const notes = ref([]);
+const notes = ref(
+  localStorage.getItem('notes') ? JSON.parse(localStorage.getItem('notes')) : []
+);
 
 const props = defineProps(['notes']);
 
@@ -22,6 +24,16 @@ function confirmNote(event) {
   showModal.value = false;
   note.value = { title: '', content: '' };
 }
+
+// onMounted(() => {
+//   if (localStorage.getItem('notes')) {
+//     notes.value = JSON.parse(localStorage.getItem('notes'));
+//   }
+// });
+
+watch(notes.value, currentValue => {
+  localStorage.setItem('notes', JSON.stringify(currentValue));
+});
 </script>
 
 <template>
