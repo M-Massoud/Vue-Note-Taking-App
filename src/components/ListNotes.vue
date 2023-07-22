@@ -1,6 +1,10 @@
 <script setup>
 const props = defineProps(['notes']);
-const emits = defineEmits(['delete-note']);
+const emits = defineEmits(['edit-note', 'delete-note']);
+
+function handleEditNote(note) {
+  emits('edit-note', note);
+}
 
 function handleDeleteNote(note) {
   emits('delete-note', note);

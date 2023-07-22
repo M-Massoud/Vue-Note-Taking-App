@@ -3,13 +3,18 @@ import { ref, watch, onMounted } from 'vue';
 import ListNotes from './ListNotes.vue';
 
 const showModal = ref(false);
+const editModal = ref(false);
 const note = ref({ id: '', title: '', content: '' });
 const notes = ref(
   localStorage.getItem('notes') ? JSON.parse(localStorage.getItem('notes')) : []
 );
+let selectedNoteId = '';
 
-function openModal() {
+function openAddNoteModal() {
+  editModal.value = false;
   showModal.value = true;
+  note.value = { id: '', title: '', content: '' };
+  selectedNoteId = '';
 }
 
 function closeModal() {
@@ -25,6 +30,29 @@ function confirmNote(event) {
   });
   showModal.value = false;
   note.value = { title: '', content: '' };
+}
+
+function editNote(selectedNote) {
+  editModal.value = true;
+  showModal.value = true;
+  selectedNoteId = selectedNote.id;
+  note.value.title = selectedNote.title;
+  note.value.content = selectedNote.content;
+}
+
+function confirmEditNote(event) {
+  event.preventDefault();
+  const noteIndex = notes.value.findIndex(
+    currentNote => currentNote.id == selectedNoteId
+  );
+  showModal.value = true;
+  notes.value[noteIndex] = {
+    id: selectedNoteId,
+    title: note.value.title,
+    content: note.value.content,
+  };
+  selectedNoteId = '';
+  showModal.value = false;
 }
 
 function deleteNote(note) {
@@ -47,8 +75,8 @@ watch(
 </script>
 
 <template>
-  <ListNotes :notes="notes" @delete-note="deleteNote" />
-  <button class="modal-open-button" @click="openModal">
+  <ListNotes :notes="notes" @edit-note="editNote" @delete-note="deleteNote" />
+  <button class="modal-open-button" @click="openAddNoteModal">
     <font-awesome-icon icon="plus" /> Add Note
   </button>
 
@@ -75,10 +103,10 @@ watch(
 
       <button
         class="modal-confirm-button"
-        @click="confirmNote"
+        @click="editModal ? confirmEditNote($event) : confirmNote($event)"
         :disabled="note.title == '' || note.content == ''"
       >
-        Confirm
+        {{ editModal ? 'Confirm Edit' : 'Confirm' }}
       </button>
     </form>
   </div>
