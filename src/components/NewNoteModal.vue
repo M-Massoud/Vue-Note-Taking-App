@@ -3,12 +3,10 @@ import { ref, watch, onMounted } from 'vue';
 import ListNotes from './ListNotes.vue';
 
 const showModal = ref(false);
-const note = ref({ title: '', content: '' });
+const note = ref({ id: '', title: '', content: '' });
 const notes = ref(
   localStorage.getItem('notes') ? JSON.parse(localStorage.getItem('notes')) : []
 );
-
-const props = defineProps(['notes']);
 
 function openModal() {
   showModal.value = true;
@@ -20,9 +18,17 @@ function closeModal() {
 
 function confirmNote(event) {
   event.preventDefault();
-  notes.value.push({ title: note.value.title, content: note.value.content });
+  notes.value.push({
+    id: Date.now(),
+    title: note.value.title,
+    content: note.value.content,
+  });
   showModal.value = false;
   note.value = { title: '', content: '' };
+}
+
+function deleteNote(note) {
+  notes.value = notes.value.filter(currentNote => currentNote.id != note.id);
 }
 
 // onMounted(() => {
@@ -31,13 +37,17 @@ function confirmNote(event) {
 //   }
 // });
 
-watch(notes.value, currentValue => {
-  localStorage.setItem('notes', JSON.stringify(currentValue));
-});
+watch(
+  notes,
+  currentValue => {
+    localStorage.setItem('notes', JSON.stringify(currentValue));
+  },
+  { deep: true }
+);
 </script>
 
 <template>
-  <ListNotes :notes="notes" />
+  <ListNotes :notes="notes" @delete-note="deleteNote" />
   <button class="modal-open-button" @click="openModal">
     <font-awesome-icon icon="plus" /> Add Note
   </button>
