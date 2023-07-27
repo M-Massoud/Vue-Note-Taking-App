@@ -13,25 +13,27 @@ function handleDeleteNote(note) {
 
 <template>
   <div class="notes-container">
-    <div class="first-note-text" v-if="notes.length == 0">
+    <p class="first-note-text" v-if="notes.length == 0">
       You don't have any notes yet!
-    </div>
-    <div v-for="note in notes" class="note-card">
-      <h2>{{ note.title }}</h2>
-      <p>{{ note.content }}</p>
-      <div class="note-card-actions-container">
-        <font-awesome-icon
-          class="note-card-action"
-          @click="handleEditNote(note)"
-          icon="fa-solid fa-pen-to-square"
-        />
-        <font-awesome-icon
-          class="note-card-action"
-          @click="handleDeleteNote(note)"
-          icon="fa-solid fa-trash"
-        />
+    </p>
+    <TransitionGroup name="fade" tag="">
+      <div v-for="note in notes" class="note-card" :key="note.id">
+        <h2>{{ note.title }}</h2>
+        <p>{{ note.content }}</p>
+        <div class="note-card-actions-container">
+          <font-awesome-icon
+            class="note-card-action"
+            @click="handleEditNote(note)"
+            icon="fa-solid fa-pen-to-square"
+          />
+          <font-awesome-icon
+            class="note-card-action"
+            @click="handleDeleteNote(note)"
+            icon="fa-solid fa-trash"
+          />
+        </div>
       </div>
-    </div>
+    </TransitionGroup>
   </div>
 </template>
 
@@ -40,6 +42,7 @@ function handleDeleteNote(note) {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  display: relative; /* for the animation */
 }
 
 .first-note-text {
@@ -63,5 +66,30 @@ function handleDeleteNote(note) {
 
 .note-card-action {
   cursor: pointer;
+}
+
+.fade-enter-from {
+  opacity: 0;
+}
+.fade-enter-to {
+  opacity: 1;
+}
+.fade-enter-active {
+  transition: all 0.3s ease;
+}
+
+.fade-leave-from {
+  opacity: 1;
+}
+.fade-leave-to {
+  opacity: 0;
+}
+.fade-leave-active {
+  transition: all 0.3s ease;
+  position: absolute;
+}
+
+.fade-move {
+  transition: all 0.3s ease;
 }
 </style>
