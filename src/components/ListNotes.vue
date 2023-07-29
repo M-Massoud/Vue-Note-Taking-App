@@ -12,29 +12,31 @@ function handleDeleteNote(note) {
 </script>
 
 <template>
-  <div class="notes-container">
+  <Transition name="switch" mode="out-in" appear>
     <p class="first-note-text" v-if="notes.length == 0">
       You don't have any notes yet!
     </p>
-    <TransitionGroup name="fade" tag="">
-      <div v-for="note in notes" class="note-card" :key="note.id">
-        <h2>{{ note.title }}</h2>
-        <p>{{ note.content }}</p>
-        <div class="note-card-actions-container">
-          <font-awesome-icon
-            class="note-card-action"
-            @click="handleEditNote(note)"
-            icon="fa-solid fa-pen-to-square"
-          />
-          <font-awesome-icon
-            class="note-card-action"
-            @click="handleDeleteNote(note)"
-            icon="fa-solid fa-trash"
-          />
+    <div v-else class="notes-container">
+      <TransitionGroup name="fade" tag="" appear>
+        <div v-for="note in notes" class="note-card" :key="note.id">
+          <h2>{{ note.title }}</h2>
+          <p>{{ note.content }}</p>
+          <div class="note-card-actions-container">
+            <font-awesome-icon
+              class="note-card-action"
+              @click="handleEditNote(note)"
+              icon="fa-solid fa-pen-to-square"
+            />
+            <font-awesome-icon
+              class="note-card-action"
+              @click="handleDeleteNote(note)"
+              icon="fa-solid fa-trash"
+            />
+          </div>
         </div>
-      </div>
-    </TransitionGroup>
-  </div>
+      </TransitionGroup>
+    </div>
+  </Transition>
 </template>
 
 <style scoped>
@@ -68,28 +70,38 @@ function handleDeleteNote(note) {
   cursor: pointer;
 }
 
-.fade-enter-from {
+.fade-enter-from,
+.switch-enter-from {
   opacity: 0;
 }
-.fade-enter-to {
+.fade-enter-to,
+.switch-enter-to {
   opacity: 1;
 }
-.fade-enter-active {
+.fade-enter-active,
+.switch-enter-to {
   transition: all 0.3s ease;
 }
 
-.fade-leave-from {
+.fade-leave-from,
+.switch-leave-from {
   opacity: 1;
 }
-.fade-leave-to {
+.fade-leave-to,
+.switch-leave-to {
   opacity: 0;
 }
-.fade-leave-active {
+.fade-leave-active,
+.switch-leave-active {
   transition: all 0.3s ease;
+}
+
+.fade-leave-active {
   position: absolute;
 }
 
-.fade-move {
+.fade-move,
+.switch-move {
   transition: all 0.3s ease;
 }
 </style>
